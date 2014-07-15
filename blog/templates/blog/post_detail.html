@@ -1,0 +1,34 @@
+﻿{% extends 'blog/base.html' %}
+{% block content %}	
+	<div><hr size="3">
+		<h2>{{ blogpost.title }}</a></h2><hr size="3">
+		<div class='bloginfo'>
+			<p><small style='font-family: monospace;'>
+			{{ blogpost.timestamp }}</small> </p>
+			<p>{{ blogpost.body }}</p>
+			<hr size="3">
+		<div>
+	</div>
+
+	{% load comments %}
+	{% block form %}
+	{% get_comment_form for blogpost as form %}
+	<H4>Разместить комментарий:</H4>
+	{% render_comment_form for blogpost %}
+	{% endblock %}
+		
+	{% block comments %}
+	{% get_comment_list for blogpost as comment_list%}
+	{% get_comment_count for blogpost as comment_count %}
+	<hr size="3"><h4>Комментарии: [{{ comment_count }}]</h4>
+	<div class="comments-list">
+	{% for comment in comment_list|dictsortreversed:"submit_date" %}
+		<dl id="comments">      
+		   <b>{{ comment.name }}</b> 
+		   <dd>{{ comment.comment|striptags|urlizetrunc:210|linebreaksbr }}</dd>
+		   <small style='font-family: monospace;'>{{ comment.submit_date|date:"d.m.Y G:i" }}</small>
+		</dl>
+	{% endfor %}
+	</div>
+	{% endblock %}
+{% endblock%}	

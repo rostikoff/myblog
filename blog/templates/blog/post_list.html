@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% block content %}	
+	<hr noshade size="2,5">
+	{% for blogpost in object_list %}
+	<div>
+		<h3><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h3>
+		<div class='bloginfo'>
+			<p><small style='font-family: monospace;'>
+				{{ blogpost.timestamp }}</small> </p> 
+			<p class=''>{{ blogpost.body|truncatewords:50 }}</p>
+			<hr noshade size="2.5">
+		<div>
+	</div>
+		{% empty %}
+    <p>Нет постов</p>
+	<hr>
+	{% endfor %} 	
+	
+	{% if is_paginated %}
+	<div class="pagination">
+		<span class="step-links">
+			{% if page_obj.has_previous %}
+			    <a href="?page={{ page_obj.previous_page_number }}"><span> <<< </a> &nbsp
+			{% endif %}
+			<span class="current">
+				Page {{ page_obj.number }}  of  {{ page_obj.paginator.num_pages }}
+			</span>
+			{% if page_obj.has_next %}
+			    &nbsp <a href="?page={{ page_obj.next_page_number }}">  >>>  </a> 
+			{% endif %}
+		</span>
+	</div>	
+	{% endif %}	
+	
+{% endblock%}
